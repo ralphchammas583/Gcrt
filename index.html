@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GCRT</title>
+<meta name="description" content="GCRT, the Global Center for Research and Technology. Independent research and technology advisory for the world's economic zones.">
+<link rel="icon" href="gcrt-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap">
+<style>
+/* Logo colours with more depth: deep-navy hero and bands, glowing sky-blue accents, light sections in between.
+   Layout: dark hero with globe and live counters, two equal practice cards with animated headers, dark "who we serve", insights, gradient contact. */
+:root{
+  color-scheme:light;
+  --night:#001A38;
+  --navy:#002E5B;
+  --navy-2:#0A3F78;
+  --blue:#02579C;
+  --sky:#2FB8F0;
+  --ice:#7EBEF1;
+  --mist:#EAF4FC;
+  --line:#D6E4F0;
+  --ink:#0E2240;
+  --mute:#51647E;
+  --white:#FFFFFF;
+  --display:"Sora",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--white);color:var(--ink);font:17px/1.6 var(--body);-webkit-font-smoothing:antialiased;
+  padding-top:env(safe-area-inset-top,0px)}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);color:var(--navy);margin:0;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(36px,5.6vw,64px);line-height:1.06;font-weight:700}
+h2{font-size:clamp(28px,3.6vw,42px);line-height:1.12;font-weight:700}
+h3{font-size:20px;line-height:1.25;font-weight:600}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left,0px))}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:600 13px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+.eyebrow::before{content:"";width:22px;height:2px;background:linear-gradient(90deg,var(--blue),var(--sky));border-radius:2px}
+.lead{font-size:clamp(18px,1.6vw,20px);color:var(--mute);max-width:60ch}
+section{padding:96px 0;position:relative}
+.sec-head{display:grid;gap:16px;margin-bottom:48px;max-width:760px}
+.grad{background:linear-gradient(90deg,var(--sky),var(--ice) 60%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-b{background:linear-gradient(90deg,var(--blue),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:6px}
+
+/* reveal: visible by default, JS only hides items below the fold until they scroll in */
+.rv.pre{opacity:0;transform:translateY(26px)}
+.rv{transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+
+/* header */
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(214,228,240,.8)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.brand img{height:54px;width:auto}
+nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:600;color:var(--ink);font-size:16px;position:relative}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--sky);transform:scaleX(0);transition:transform .25s}
+nav a:hover::after{transform:scaleX(1)}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--display);text-decoration:none;padding:15px 24px;border-radius:999px;border:1.5px solid transparent;transition:transform .2s,box-shadow .2s,background .2s;cursor:pointer}
+.btn svg{width:16px;height:16px;transition:transform .2s}
+.btn:hover svg{transform:translateX(3px)}
+.btn.solid{background:var(--navy);color:#fff}
+.btn.solid:hover{background:var(--blue);box-shadow:0 10px 26px rgba(2,87,156,.3)}
+.btn.glow{background:linear-gradient(90deg,var(--sky),#5CCBF7);color:var(--night);box-shadow:0 10px 30px rgba(47,184,240,.35)}
+.btn.glow:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(47,184,240,.5)}
+.btn.line{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.06)}
+.btn.line:hover{background:rgba(255,255,255,.14)}
+.menu{display:none;background:none;border:0;padding:8px;cursor:pointer;color:var(--navy)}
+.menu svg{width:26px;height:26px}
+
+/* hero */
+.hero{background:radial-gradient(800px 520px at 78% 38%,rgba(47,184,240,.28),transparent 65%),radial-gradient(700px 500px at 5% 100%,rgba(2,87,156,.55),transparent 70%),linear-gradient(160deg,var(--night) 0%,var(--navy) 55%,#033E7A 100%);color:#fff;padding:72px 0 0;overflow:hidden}
+#stars{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center}
+.hero-copy{display:grid;gap:26px}
+.hero h1{color:#fff}
+.hero .lead{color:#C6DCF1}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+.pill{display:inline-flex;align-items:center;gap:10px;width:max-content;max-width:100%;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(126,190,241,.35);color:#E3F1FD;font:600 13px/1.2 var(--display)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--sky);box-shadow:0 0 0 0 rgba(47,184,240,.7);animation:ping 2s infinite;flex:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(47,184,240,.7)}80%,100%{box-shadow:0 0 0 10px rgba(47,184,240,0)}}
+.globe{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;justify-self:center}
+.globe canvas{width:100%;height:100%;display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr) 1.15fr;gap:16px;margin-top:40px;padding-bottom:48px}
+.stat{padding:22px 22px;border-radius:var(--r);background:rgba(255,255,255,.06);border:1px solid rgba(126,190,241,.2);backdrop-filter:blur(6px)}
+.stat b{display:block;font:700 clamp(28px,3.2vw,40px)/1 var(--display);font-variant-numeric:tabular-nums;color:#fff}
+.stat span{display:block;margin-top:8px;color:#A9C8E6;font-size:15px}
+.stat.src{background:none;border:0;padding:8px 4px;color:#8FB1D3;font-size:13px;line-height:1.55;align-self:center}
+
+/* practices */
+.what{background:linear-gradient(180deg,#F4F9FE 0%,#fff 60%)}
+.practices{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.practice{border-radius:24px;background:#fff;border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,46,91,.07);transition:transform .3s,box-shadow .3s}
+.practice:hover{transform:translateY(-4px);box-shadow:0 28px 60px rgba(0,46,91,.13)}
+.p-art{position:relative;height:200px;overflow:hidden}
+.p-art svg{position:absolute;inset:0;width:100%;height:100%}
+.p-art::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--shade) 0%,var(--shade) 30%,transparent 75%);pointer-events:none}
+.research .p-art{--shade:rgba(0,26,56,.75)}
+.tech .p-art{--shade:rgba(2,74,138,.8)}
+.p-art .p-label{position:absolute;left:28px;bottom:22px;display:grid;gap:6px;color:#fff;z-index:1}
+.p-art .p-label small{font:600 12px/1 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--ice)}
+.p-art .p-label h3{color:#fff;font-size:30px;font-weight:700}
+.research .p-art{background:linear-gradient(135deg,var(--night),var(--navy) 50%,var(--navy-2))}
+.tech .p-art{background:linear-gradient(135deg,#024A8A,var(--blue) 45%,#1A9AD6)}
+.p-body{padding:30px 30px 34px;display:grid;gap:20px}
+.p-body .q{font-size:18px;color:var(--mute)}
+.offers{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.offers li{display:grid;grid-template-columns:46px 1fr;gap:14px;padding:14px;border-radius:14px;transition:background .2s}
+.offers li:hover{background:var(--mist)}
+.o-ico{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;color:#fff}
+.research .o-ico{background:linear-gradient(135deg,var(--navy),var(--blue))}
+.tech .o-ico{background:linear-gradient(135deg,var(--blue),var(--sky))}
+.o-ico svg{width:22px;height:22px}
+.offers b{display:block;font:600 17px/1.3 var(--display);color:var(--navy);margin-bottom:3px}
+.offers span{color:var(--mute);font-size:16px;line-height:1.5}
+
+/* flow */
+.flow{padding:30px 0 96px;background:#fff}
+.flow-box{border-radius:28px;background:linear-gradient(120deg,var(--mist),#F7FBFF);border:1px solid var(--line);padding:44px 36px;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:12px}
+.step{display:grid;justify-items:center;gap:10px;text-align:center}
+.step .dot{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;color:#fff;position:relative}
+.step .dot::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid currentColor;opacity:.25;animation:ring 3s infinite}
+.step:nth-child(3) .dot::after{animation-delay:1s}.step:nth-child(5) .dot::after{animation-delay:2s}
+@keyframes ring{0%{transform:scale(.9);opacity:.45}100%{transform:scale(1.25);opacity:0}}
+.step .dot svg{width:32px;height:32px}
+.d1{background:linear-gradient(135deg,var(--night),var(--navy));color:var(--navy)!important}
+.d2{background:linear-gradient(135deg,var(--navy-2),var(--blue));color:var(--blue)!important}
+.d3{background:linear-gradient(135deg,var(--blue),var(--sky));color:var(--sky)!important}
+.step .dot svg{color:#fff}
+.step b{font:700 18px/1.25 var(--display);color:var(--navy)}
+.step span{color:var(--mute);font-size:15px;line-height:1.45;max-width:24ch}
+.pipe{width:90px;height:4px;border-radius:4px;margin-top:-62px;background:repeating-linear-gradient(90deg,var(--sky) 0 10px,transparent 10px 18px);background-size:36px 4px;animation:flowx 1s linear infinite;opacity:.8}
+@keyframes flowx{to{background-position:36px 0}}
+
+/* who */
+.who-sec{background:radial-gradient(700px 400px at 90% 0%,rgba(47,184,240,.22),transparent 70%),linear-gradient(170deg,var(--night),var(--navy));color:#fff;overflow:hidden}
+.who-sec h2{color:#fff}
+.who-sec .lead{color:#C6DCF1}
+.who-sec .eyebrow{color:var(--ice)}
+.who{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:start}
+.types{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.type{display:flex;gap:14px;align-items:center;padding:18px;border-radius:var(--r);background:rgba(255,255,255,.06);border:1px solid rgba(126,190,241,.18);transition:background .25s,border-color .25s,transform .25s}
+.type:hover{background:rgba(47,184,240,.12);border-color:rgba(47,184,240,.55);transform:translateY(-2px)}
+.type .o-ico{background:linear-gradient(135deg,var(--blue),var(--sky));flex:none}
+.type b{font:600 16px/1.3 var(--display);color:#fff}
+.promise{border-radius:24px;padding:32px;background:linear-gradient(160deg,rgba(47,184,240,.18),rgba(255,255,255,.04));border:1px solid rgba(126,190,241,.3);display:grid;gap:22px}
+.promise h3{color:#fff;font-size:22px}
+.pr{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start}
+.pr i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(47,184,240,.2);color:var(--sky);font:700 15px/1 var(--display);font-style:normal}
+.pr b{display:block;font:600 17px/1.3 var(--display);color:#fff;margin-bottom:3px}
+.pr span{color:#B9D4EE;font-size:15px;line-height:1.5}
+
+/* insights */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.filters button{font:600 14px/1 var(--display);padding:12px 20px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;transition:all .2s}
+.filters button:hover{border-color:var(--sky)}
+.filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;background:#fff;transition:transform .3s,box-shadow .3s}
+.card:hover{transform:translateY(-5px);box-shadow:0 22px 44px rgba(0,46,91,.14)}
+.card .art{aspect-ratio:16/10;display:block;width:100%}
+.card .body{padding:20px;display:grid;gap:10px;flex:1;align-content:start}
+.tag{font:600 12px/1 var(--display);letter-spacing:.1em;text-transform:uppercase}
+.tag.r{color:var(--navy)}
+.tag.t{color:#0B8CC4}
+.card h3{font-size:18px}
+.card p{color:var(--mute);font-size:15px;line-height:1.5}
+.card a{margin-top:auto;padding:0 20px 20px;font:600 14px/1 var(--display);color:var(--blue);text-decoration:none}
+.card a:hover{text-decoration:underline}
+
+/* contact */
+.contact-sec{background:radial-gradient(600px 400px at 0% 100%,rgba(47,184,240,.25),transparent 70%),linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff}
+.contact-sec h2{color:#fff}
+.contact-sec .lead{color:#D2E6F8}
+.contact-sec .eyebrow{color:var(--ice)}
+.contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.offices{display:grid;gap:14px;margin-top:30px}
+.office{display:flex;gap:14px;align-items:center;padding:18px;border-radius:var(--r);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+.office .o-ico{background:rgba(47,184,240,.25)}
+.office b{display:block;font:600 16px/1.3 var(--display);color:#fff}
+.office span{color:#C6DCF1;font-size:15px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:32px;border-radius:24px;background:#fff;box-shadow:0 30px 70px rgba(0,20,50,.35);color:var(--ink)}
+.field{display:grid;gap:6px}
+.field.full{grid-column:1/-1}
+label{font:600 14px/1.2 var(--display);color:var(--navy)}
+input,select,textarea{font:16px/1.4 var(--body);padding:13px 14px;border:1.5px solid var(--line);border-radius:11px;background:#F8FBFE;color:var(--ink);width:100%}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px rgba(47,184,240,.2);background:#fff}
+.form-foot{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+#note{color:var(--blue);font-weight:600}
+
+footer{background:var(--night);color:#B9D4EE;padding:48px 0 calc(32px + env(safe-area-inset-bottom,0px))}
+footer .wrap{display:grid;gap:22px}
+.f-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:center}
+.f-name{font:800 24px/1.2 var(--display);color:#fff;letter-spacing:.08em}
+.f-name small{display:block;font:500 12px/1.4 var(--display);letter-spacing:.14em;color:#8FB1D3;text-transform:uppercase;margin-top:6px}
+.f-links{display:flex;flex-wrap:wrap;gap:22px}
+.f-links a{color:#fff;text-decoration:none;font-size:15px}
+.f-links a:hover{color:var(--sky)}
+.f-bot{border-top:1px solid rgba(255,255,255,.12);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:14px;color:#8FB1D3}
+
+/* responsive */
+@media (max-width:1020px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .stat.src{grid-column:1/-1}
+}
+@media (max-width:880px){
+  nav{position:absolute;top:72px;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);display:none;padding:8px 20px 18px;box-shadow:0 20px 40px rgba(0,46,91,.12)}
+  nav.open{display:block}
+  nav ul{flex-direction:column;gap:0}
+  nav li a{display:block;padding:15px 0;border-bottom:1px solid var(--line)}
+  nav a::after{display:none}
+  .menu{display:block}
+  .bar .btn{display:none}
+  .hero{padding-top:20px}
+  .hero-grid,.practices,.who,.contact{grid-template-columns:1fr}
+  .globe{max-width:400px;grid-row:1;margin:-30px auto -70px}
+  .flow-box{grid-template-columns:1fr;justify-items:center;gap:8px;padding:36px 20px}
+  .pipe{width:4px;height:44px;margin:4px 0;background:repeating-linear-gradient(180deg,var(--sky) 0 10px,transparent 10px 18px);background-size:4px 36px;animation:flowy 1s linear infinite}
+  @keyframes flowy{to{background-position:0 36px}}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  section{padding:68px 0}
+  .brand img{height:44px}
+  .p-body{padding:22px 18px 26px}
+  .p-art{height:170px}
+  .p-art .p-label h3{font-size:26px}
+  .types,.cards{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .stat{padding:16px 12px}
+  .stat span{font-size:13px}
+  form{grid-template-columns:1fr;padding:22px}
+  .promise{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rv.pre{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="GCRT home"><img src="gcrt-logo.png" alt="GCRT, Global Center for Research and Technology" width="900" height="311"></a>
+    <nav id="nav" aria-label="Main">
+      <ul>
+        <li><a href="#what">What we do</a></li>
+        <li><a href="#who">Who we serve</a></li>
+        <li><a href="#insights">Insights</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn solid" href="#contact">Talk to us</a>
+    <button class="menu" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="pill"><i></i>Built only for economic zones</span>
+        <h1>Research and technology for the world’s <span class="grad">economic zones.</span></h1>
+        <p class="lead">GCRT helps free zones and special economic zones make better decisions with independent research, and run better with the right technology.</p>
+        <div class="ctas">
+          <a class="btn glow" href="#research">Research
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn line" href="#technology">Technology advisory
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="globe"><canvas id="globe" aria-label="Animated globe with connected economic zones" role="img"></canvas></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b data-count="5400" data-pre="~">~5,400</b><span>Economic zones worldwide</span></div>
+      <div class="stat"><b data-count="147">147</b><span>Host economies</span></div>
+      <div class="stat"><b data-count="500" data-post="+">500+</b><span>New zones in the pipeline</span></div>
+      <p class="stat src">Source: UNCTAD, World Investment Report 2019. Every one of these zones competes for investors, and needs both sound evidence and modern systems.</p>
+    </div>
+  </div>
+</section>
+
+<section class="what" id="what">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">What we do</span>
+      <h2>Two practices. Equal weight. <span class="grad-b">One focus.</span></h2>
+      <p class="lead">Research tells a zone what to change. Technology advisory helps it make the change.</p>
+    </div>
+
+    <div class="practices">
+      <article class="practice research rv" id="research">
+        <div class="p-art">
+          <svg viewBox="0 0 560 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g stroke="rgba(126,190,241,.12)">
+              <line x1="0" y1="50" x2="560" y2="50"/><line x1="0" y1="100" x2="560" y2="100"/><line x1="0" y1="150" x2="560" y2="150"/>
+            </g>
+            <g fill="#2FB8F0">
+              <rect x="300" y="110" width="26" height="90" rx="5" opacity=".35"><animate attributeName="y" values="120;90;120" dur="5s" repeatCount="indefinite"/><animate attributeName="height" values="80;110;80" dur="5s" repeatCount="indefinite"/></rect>
+              <rect x="340" y="80" width="26" height="120" rx="5" opacity=".5"><animate attributeName="y" values="80;110;80" dur="6s" repeatCount="indefinite"/><animate attributeName="height" values="120;90;120" dur="6s" repeatCount="indefinite"/></rect>
+              <rect x="380" y="100" width="26" height="100" rx="5" opacity=".65"><animate attributeName="y" values="100;60;100" dur="5.5s" repeatCount="indefinite"/><animate attributeName="height" values="100;140;100" dur="5.5s" repeatCount="indefinite"/></rect>
+              <rect x="420" y="60" width="26" height="140" rx="5" opacity=".8"><animate attributeName="y" values="60;85;60" dur="4.5s" repeatCount="indefinite"/><animate attributeName="height" values="140;115;140" dur="4.5s" repeatCount="indefinite"/></rect>
+              <rect x="460" y="40" width="26" height="160" rx="5"><animate attributeName="y" values="40;30;40" dur="4s" repeatCount="indefinite"/><animate attributeName="height" values="160;170;160" dur="4s" repeatCount="indefinite"/></rect>
+            </g>
+            <path d="M250 150 C 320 140, 360 90, 410 80 S 490 30, 540 25" fill="none" stroke="#fff" stroke-width="2.5" stroke-dasharray="6 6"><animate attributeName="stroke-dashoffset" from="0" to="-48" dur="2s" repeatCount="indefinite"/></path>
+            <circle r="6" fill="#fff"><animateMotion dur="4s" repeatCount="indefinite" path="M250 150 C 320 140, 360 90, 410 80 S 490 30, 540 25"/></circle>
+            <g transform="translate(470 120)" opacity=".9"><circle r="26" fill="none" stroke="#7EBEF1" stroke-width="4"/><line x1="18" y1="18" x2="38" y2="38" stroke="#7EBEF1" stroke-width="6" stroke-linecap="round"/>
+              <animateTransform attributeName="transform" type="translate" values="470 120;440 110;470 120" dur="7s" repeatCount="indefinite"/></g>
+          </svg>
+          <div class="p-label"><small>Practice 1</small><h3>Research</h3></div>
+        </div>
+        <div class="p-body">
+          <p class="q">Independent evidence on how zones perform, compete and grow.</p>
+          <ul class="offers">
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg></span>
+              <div><b>Flagship studies</b><span>The yearly Zone Outlook, plus studies on law, tax, trade and talent. Free to read.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></span>
+              <div><b>Zone database and benchmarks</b><span>Every zone in one common format, compared with its true peers.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0z"/></svg></span>
+              <div><b>Policy and legal frameworks</b><span>Zone laws, incentives and governance that fit international rules.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span>
+              <div><b>Custom research</b><span>Feasibility, market and impact studies for a zone or a government.</span></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="practice tech rv" id="technology">
+        <div class="p-art">
+          <svg viewBox="0 0 560 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2">
+              <path id="c1" d="M260 30 H340 V90 H420"/><path id="c2" d="M260 170 H330 V120 H420"/><path id="c3" d="M480 105 H560"/><path id="c4" d="M450 20 V70"/><path id="c5" d="M450 140 V190"/>
+            </g>
+            <g fill="#fff">
+              <circle r="4"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#c1"/></animateMotion></circle>
+              <circle r="4"><animateMotion dur="3.1s" repeatCount="indefinite"><mpath href="#c2"/></animateMotion></circle>
+              <circle r="4"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#c3"/></animateMotion></circle>
+            </g>
+            <rect x="420" y="70" width="60" height="70" rx="10" fill="#002E5B" stroke="#7EBEF1" stroke-width="2"/>
+            <rect x="436" y="88" width="28" height="34" rx="5" fill="#2FB8F0"><animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite"/></rect>
+            <g fill="#2FB8F0"><circle cx="260" cy="30" r="7"/><circle cx="260" cy="170" r="7"/><circle cx="450" cy="20" r="6"/><circle cx="450" cy="190" r="6"/></g>
+            <g fill="none" stroke="#fff" stroke-opacity=".5"><circle cx="450" cy="105" r="60"><animate attributeName="r" values="45;95" dur="3s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".5;0" dur="3s" repeatCount="indefinite"/></circle></g>
+          </svg>
+          <div class="p-label"><small>Practice 2</small><h3>Technology advisory</h3></div>
+        </div>
+        <div class="p-body">
+          <p class="q">Practical advice on the systems that make a zone fast, digital and easy to do business in.</p>
+          <ul class="offers">
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-5 4 3 9-10"/><path d="M15 8h6v6"/></svg></span>
+              <div><b>Digital zone strategy</b><span>A technology roadmap tied to the zone’s growth plan and budget.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h5M7 12h8"/></svg></span>
+              <div><b>Investor platforms</b><span>One-stop online services for licences, visas, customs and client care.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z"/></svg></span>
+              <div><b>AI and data</b><span>Use cases, data foundations and quick pilots for zone teams and tenants.</span></div></li>
+            <li><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
+              <div><b>Vendor selection and delivery</b><span>Clear requirements, fair vendor choice and oversight until go-live.</span></div></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="flow">
+  <div class="wrap">
+    <div class="flow-box rv">
+      <div class="step"><span class="dot d1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"/><path d="M8 17v-3M11.5 17v-6M15 17v-4"/></svg></span><b>Evidence</b><span>What is working, and what peers do better</span></div>
+      <span class="pipe" aria-hidden="true"></span>
+      <div class="step"><span class="dot d2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><b>Decision</b><span>Clear priorities for the zone’s leaders</span></div>
+      <span class="pipe" aria-hidden="true"></span>
+      <div class="step"><span class="dot d3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span><b>Delivery</b><span>The right technology, built and running</span></div>
+    </div>
+  </div>
+</div>
+
+<section class="who-sec" id="who">
+  <div class="wrap who">
+    <div>
+      <div class="sec-head rv" style="margin-bottom:30px">
+        <span class="eyebrow">Who we serve</span>
+        <h2>Economic zones. <span class="grad">Nobody else.</span></h2>
+        <p class="lead">Every study, tool and adviser at GCRT is focused on zones and the people who run them.</p>
+      </div>
+      <div class="types rv">
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l5-3v14M14 21V5l5 3v13"/></svg></span><b>Free zones</b></div>
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" stroke-dasharray="3 3"/><path d="M8 16V11M12 16V8M16 16v-3"/></svg></span><b>Special economic zones</b></div>
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V11l5 3V11l5 3V11l5 3V6h3v15z"/></svg></span><b>Industrial and logistics parks</b></div>
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L5 19a1.5 1.5 0 001.3 2h11.4a1.5 1.5 0 001.3-2l-5-10V3"/></svg></span><b>Science and tech parks</b></div>
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6M5 10v9M19 10v9M9 10v9M15 10v9M3 21h18"/></svg></span><b>Zone authorities and regulators</b></div>
+        <div class="type"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span><b>Governments planning new zones</b></div>
+      </div>
+    </div>
+    <aside class="promise rv">
+      <h3>What every zone can expect</h3>
+      <div class="pr"><i>1</i><div><b>Independent</b><span>No vendor ties. Our advice follows the evidence.</span></div></div>
+      <div class="pr"><i>2</i><div><b>Practical</b><span>Every study ends in actions a zone can take.</span></div></div>
+      <div class="pr"><i>3</i><div><b>Focused</b><span>Zones are all we do, from policy to platforms.</span></div></div>
+    </aside>
+  </div>
+</section>
+
+<section id="insights">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Insights</span>
+      <h2>Latest from both practices</h2>
+    </div>
+    <div class="filters" role="group" aria-label="Filter insights">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="r" aria-pressed="false">Research</button>
+      <button type="button" data-f="t" aria-pressed="false">Technology</button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<section class="contact-sec" id="contact">
+  <div class="wrap contact">
+    <div class="rv">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="eyebrow">Contact</span>
+        <h2>Let’s talk about your zone.</h2>
+        <p class="lead">Tell us what you need: a study, a technology review, or both.</p>
+      </div>
+      <div class="offices">
+        <div class="office"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Head office</b><span>Geneva, Switzerland</span></div></div>
+        <div class="office"><span class="o-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><b>Operational base</b><span>Dubai, United Arab Emirates</span></div></div>
+      </div>
+    </div>
+    <form id="form" class="rv" novalidate>
+      <div class="field"><label for="fName">Full name</label><input id="fName" autocomplete="name"></div>
+      <div class="field"><label for="fOrg">Organization</label><input id="fOrg" autocomplete="organization"></div>
+      <div class="field full"><label for="fEmail">Work email</label><input id="fEmail" type="email" autocomplete="email"></div>
+      <div class="field full"><label for="fTopic">I am interested in</label>
+        <select id="fTopic">
+          <option>Research</option>
+          <option>Technology advisory</option>
+          <option>Both research and technology</option>
+          <option>Partnership</option>
+          <option>Media</option>
+        </select></div>
+      <div class="field full"><label for="fMsg">Message</label><textarea id="fMsg"></textarea></div>
+      <div class="form-foot"><button class="btn solid" type="submit">Send message</button><span id="note" aria-live="polite"></span></div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-name">GCRT<small>Global Center for Research and Technology</small></div>
+      <div class="f-links">
+        <a href="#research">Research</a>
+        <a href="#technology">Technology advisory</a>
+        <a href="#insights">Insights</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© 2026 Global Center for Research and Technology. Independent and not-for-profit.</span>
+      <span>Concept preview. Founding sponsor: Dubai Integrated Economic Zones.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* menu */
+$('#menuBtn').addEventListener('click',()=>{const o=$('#nav').classList.toggle('open');$('#menuBtn').setAttribute('aria-expanded',String(o));});
+document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>{$('#nav').classList.remove('open');$('#menuBtn').setAttribute('aria-expanded','false');}));
+
+/* insights */
+const ART={
+  future:()=>`<svg class="art" viewBox="0 0 320 200" aria-hidden="true"><defs><linearGradient id="gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#001A38"/><stop offset="1" stop-color="#0A3F78"/></linearGradient></defs><rect width="320" height="200" fill="url(#gf)"/>${[40,70,100,130,160].map((y,i)=>`<path d="M0 ${y} Q80 ${y-30} 160 ${y} T320 ${y}" fill="none" stroke="${i==2?'#2FB8F0':'#7EBEF1'}" stroke-opacity="${i==2?1:.3}" stroke-width="${i==2?3:1.5}"><animate attributeName="d" values="M0 ${y} Q80 ${y-30} 160 ${y} T320 ${y};M0 ${y} Q80 ${y+20} 160 ${y} T320 ${y};M0 ${y} Q80 ${y-30} 160 ${y} T320 ${y}" dur="${6+i}s" repeatCount="indefinite"/></path>`).join('')}<circle cx="240" cy="100" r="7" fill="#fff"/><circle cx="240" cy="100" r="10" fill="none" stroke="#2FB8F0"><animate attributeName="r" values="8;26" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="2.4s" repeatCount="indefinite"/></circle></svg>`,
+  tax:()=>`<svg class="art" viewBox="0 0 320 200" aria-hidden="true"><rect width="320" height="200" fill="#EAF4FC"/>${[50,110,70,140,90,120,60].map((h,i)=>`<rect x="${34+i*38}" y="${170-h}" width="24" height="${h}" rx="4" fill="${h<100?'#7EBEF1':'#002E5B'}"><animate attributeName="height" values="0;${h}" dur="1.2s" begin="${i*.1}s" fill="freeze"/><animate attributeName="y" values="170;${170-h}" dur="1.2s" begin="${i*.1}s" fill="freeze"/></rect>`).join('')}<line x1="20" y1="70" x2="300" y2="70" stroke="#02579C" stroke-width="2" stroke-dasharray="6 5"><animate attributeName="stroke-dashoffset" from="0" to="-22" dur="1s" repeatCount="indefinite"/></line><rect x="232" y="50" width="60" height="26" rx="13" fill="#02579C"/><text x="262" y="68" text-anchor="middle" font-family="Sora,sans-serif" font-size="13" font-weight="600" fill="#fff">15%</text></svg>`,
+  digital:()=>`<svg class="art" viewBox="0 0 320 200" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#02579C"/><stop offset="1" stop-color="#1A9AD6"/></linearGradient></defs><rect width="320" height="200" fill="url(#gd)"/><rect x="90" y="30" width="140" height="140" rx="16" fill="#002E5B" stroke="#7EBEF1" stroke-opacity=".6"/>${['Licence','Visa','Customs','Support'].map((t,i)=>`<rect x="106" y="${46+i*30}" width="108" height="22" rx="6" fill="#0A3F78"><animate attributeName="fill" values="#0A3F78;#2FB8F0;#0A3F78;#0A3F78" keyTimes="0;.1;.25;1" dur="4s" begin="${i}s" repeatCount="indefinite"/></rect><text x="118" y="${61+i*30}" font-family="Sora,sans-serif" font-size="11" fill="#fff">${t}</text><circle cx="202" cy="${57+i*30}" r="4" fill="#7EBEF1"/>`).join('')}<path d="M30 100h60M230 100h60" stroke="#fff" stroke-opacity=".6" stroke-dasharray="4 5"><animate attributeName="stroke-dashoffset" from="0" to="-18" dur="1s" repeatCount="indefinite"/></path><circle cx="26" cy="100" r="7" fill="#fff"/><circle cx="294" cy="100" r="7" fill="#fff"/></svg>`,
+  ai:()=>{let n=[[60,60],[60,140],[160,40],[160,100],[160,160],[260,100]];let e=[[0,2],[0,3],[1,3],[1,4],[2,5],[3,5],[4,5],[0,4],[1,2]];return `<svg class="art" viewBox="0 0 320 200" aria-hidden="true"><rect width="320" height="200" fill="#EAF4FC"/>${e.map(([a,b],k)=>`<line x1="${n[a][0]}" y1="${n[a][1]}" x2="${n[b][0]}" y2="${n[b][1]}" stroke="#7EBEF1" stroke-width="2"/><circle r="3.5" fill="#2FB8F0"><animateMotion dur="${2+(k%3)*.6}s" begin="${k*.3}s" repeatCount="indefinite" path="M${n[a][0]} ${n[a][1]} L${n[b][0]} ${n[b][1]}"/></circle>`).join('')}${n.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="${i==5?16:11}" fill="${i==5?'#2FB8F0':'#002E5B'}"/>`).join('')}<circle cx="260" cy="100" r="16" fill="none" stroke="#2FB8F0"><animate attributeName="r" values="16;34" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="2s" repeatCount="indefinite"/></circle></svg>`}
+};
+const INS=[
+  {k:'r',tag:'Research · Study',t:'The Future of Free Zones',d:'Six shifts that will change why zones exist by 2035, and what to do about them now.',a:'future'},
+  {k:'t',tag:'Technology · Guide',t:'The Digital Zone',d:'What investors now expect online, from first enquiry to licence, visa and customs.',a:'digital'},
+  {k:'r',tag:'Research · Brief',t:'Global Minimum Tax and the Zone Offer',d:'What the 15% minimum means for tax holidays, and five ways zones can respond.',a:'tax'},
+  {k:'t',tag:'Technology · Brief',t:'AI in Zone Operations',d:'Where AI saves real time for zone teams and tenants, and how to start small.',a:'ai'}
+];
+function renderCards(f){
+  $('#cards').innerHTML=INS.filter(i=>f==='all'||i.k===f).map(i=>`<article class="card">${ART[i.a]()}<div class="body"><span class="tag ${i.k}">${i.tag}</span><h3>${i.t}</h3><p>${i.d}</p></div><a href="#contact" data-topic="${i.k}">Request a copy →</a></article>`).join('');
+}
+renderCards('all');
+document.querySelector('.filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderCards(b.dataset.f);});
+$('#cards').addEventListener('click',e=>{const a=e.target.closest('[data-topic]');if(a)$('#fTopic').selectedIndex=a.dataset.topic==='r'?0:1;});
+
+/* form */
+$('#form').addEventListener('submit',e=>{e.preventDefault();const n=$('#fName').value.trim(),m=$('#fEmail').value.trim();
+  if(!n||!/.+@.+\..+/.test(m)){$('#note').textContent='Please add your name and a valid work email.';return;}
+  $('#note').textContent=`Thank you, ${n}. This is a preview site, so your message has not been sent.`;});
+
+/* reveal on scroll + counters */
+(function(){
+  if(reduce||!('IntersectionObserver' in window))return;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target);}}),{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.rv').forEach((el,k)=>{if(el.getBoundingClientRect().top>innerHeight*.9){el.classList.add('pre');el.style.transitionDelay=(k%2)*.1+'s';io.observe(el);}});
+  setTimeout(()=>document.querySelectorAll('.rv.pre').forEach(el=>el.classList.remove('pre')),8000);
+  document.querySelectorAll('[data-count]').forEach(el=>{const n=+el.dataset.count,pre=el.dataset.pre||'',post=el.dataset.post||'',t0=performance.now();
+    (function f(now){const p=Math.min(1,(now-t0)/1800),e=1-Math.pow(1-p,3);el.textContent=pre+Math.round(n*e).toLocaleString('en-US')+post;if(p<1)requestAnimationFrame(f);})(t0);});
+})();
+
+/* starfield behind hero */
+(function(){
+  const cv=$('#stars'),c=cv.getContext('2d');let W,H,S=[];
+  function size(){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;c.setTransform(d,0,0,d,0,0);
+    S=Array.from({length:Math.round(W*H/9000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.3,p:Math.random()*6,v:Math.random()*.15+.03}));}
+  new ResizeObserver(size).observe(cv);size();
+  function draw(t){c.clearRect(0,0,W,H);for(const s of S){const a=.25+.55*(Math.sin(t*.0012+s.p)+1)/2;c.fillStyle=`rgba(190,226,252,${a})`;c.beginPath();c.arc(s.x,s.y,s.r,0,7);c.fill();if(!reduce){s.x+=s.v;if(s.x>W)s.x=0;}}}
+  if(reduce){draw(0);return;}(function loop(t){draw(t);requestAnimationFrame(loop);})(0);
+})();
+
+/* globe */
+(function(){
+  const cv=$('#globe'),c=cv.getContext('2d');let W=0,R=0;
+  function size(){const r=cv.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);W=r.width;cv.width=W*d;cv.height=W*d;c.setTransform(d,0,0,d,0,0);R=W*0.32;}
+  new ResizeObserver(()=>{size();if(reduce)draw(0)}).observe(cv);size();
+  const N=1100,P=[];for(let i=0;i<N;i++){const y=1-(i/(N-1))*2,r=Math.sqrt(1-y*y),t=i*2.39996;P.push([Math.cos(t)*r,y,Math.sin(t)*r]);}
+  const H=[[25.2,55.3],[46.2,6.1],[18.5,-69.9],[44.4,26.1],[22.5,114.1],[1.35,103.8],[9.4,-79.9],[52.7,-8.9],[35.8,-5.8],[6.5,3.4],[19.1,72.9],[-6.2,106.8],[25.7,-100.3],[-1.3,36.8],[-23.5,-46.6],[31.2,121.5]].map(([la,lo])=>{la*=Math.PI/180;lo*=Math.PI/180;return[Math.cos(la)*Math.sin(lo),Math.sin(la),Math.cos(la)*Math.cos(lo)];});
+  const L=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,10],[0,13],[1,7],[1,8],[2,6],[2,12],[4,15],[5,11],[9,14],[3,1]];
+  const tilt=0.38;
+  function rot(p,a){const[x,y,z]=p;const x1=x*Math.cos(a)+z*Math.sin(a),z1=-x*Math.sin(a)+z*Math.cos(a);return[x1,y*Math.cos(tilt)-z1*Math.sin(tilt),y*Math.sin(tilt)+z1*Math.cos(tilt)];}
+  function slerp(a,b,t){const d=Math.acos(Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2])));if(d<1e-6)return a;const s=Math.sin(d),k1=Math.sin((1-t)*d)/s,k2=Math.sin(t*d)/s;return[a[0]*k1+b[0]*k2,a[1]*k1+b[1]*k2,a[2]*k1+b[2]*k2];}
+  function orbit(time,front){c.save();c.translate(W/2,W/2);c.rotate(-0.42);
+    c.beginPath();if(front)c.ellipse(0,0,R*1.45,R*0.42,0,0,Math.PI);else c.ellipse(0,0,R*1.45,R*0.42,0,Math.PI,Math.PI*2);
+    const g=c.createLinearGradient(-R*1.4,0,R*1.4,0);g.addColorStop(0,'#1A7FD0');g.addColorStop(.5,'#2FB8F0');g.addColorStop(1,'#BFE6FF');
+    c.strokeStyle=g;c.lineWidth=front?R*0.055:R*0.03;c.globalAlpha=front?1:.4;c.lineCap='round';c.shadowColor='#2FB8F0';c.shadowBlur=front?20:0;c.stroke();
+    const a=(time*0.00035)%(Math.PI*2),fx=Math.cos(a)*R*1.45,fy=Math.sin(a)*R*0.42;
+    if((Math.sin(a)>0)===front){c.globalAlpha=1;c.fillStyle='#fff';c.shadowBlur=24;c.beginPath();c.arc(fx,fy,R*0.04,0,7);c.fill();}
+    c.restore();}
+  function draw(time){
+    if(!W)return;c.clearRect(0,0,W,W);const cx=W/2,cy=W/2,a=time*0.00012-0.9;
+    const atm=c.createRadialGradient(cx,cy,R*.9,cx,cy,R*1.35);atm.addColorStop(0,'rgba(47,184,240,.35)');atm.addColorStop(1,'rgba(47,184,240,0)');c.fillStyle=atm;c.beginPath();c.arc(cx,cy,R*1.35,0,7);c.fill();
+    orbit(time,false);
+    const g=c.createRadialGradient(cx-R*.35,cy-R*.4,R*.1,cx,cy,R);g.addColorStop(0,'#4FA6EA');g.addColorStop(.55,'#0B5BA6');g.addColorStop(1,'#00264D');
+    c.fillStyle=g;c.beginPath();c.arc(cx,cy,R,0,7);c.fill();
+    for(const p of P){const[x,y,z]=rot(p,a);if(z<0)continue;c.globalAlpha=.15+z*.6;c.fillStyle='#CFEAFD';c.beginPath();c.arc(cx+x*R,cy-y*R,R*0.007+z*R*0.006,0,7);c.fill();}
+    c.globalAlpha=1;c.lineWidth=1.5;
+    L.forEach(([i,j],k)=>{const A=H[i],B=H[j];c.beginPath();let st=false;
+      for(let s=0;s<=28;s++){const q=slerp(A,B,s/28),lf=1+Math.sin(Math.PI*s/28)*0.2;const[x,y,z]=rot([q[0]*lf,q[1]*lf,q[2]*lf],a);if(z<-0.05){st=false;continue;}const X=cx+x*R,Y=cy-y*R;if(!st){c.moveTo(X,Y);st=true}else c.lineTo(X,Y);}
+      c.strokeStyle='rgba(126,210,250,.8)';c.stroke();
+      const t=((time*0.00025+k*0.137)%1),q=slerp(A,B,t),lf=1+Math.sin(Math.PI*t)*0.2,[x,y,z]=rot([q[0]*lf,q[1]*lf,q[2]*lf],a);
+      if(z>0){c.fillStyle='#fff';c.shadowColor='#2FB8F0';c.shadowBlur=10;c.beginPath();c.arc(cx+x*R,cy-y*R,2.6,0,7);c.fill();c.shadowBlur=0;}});
+    H.forEach((h,i)=>{const[x,y,z]=rot(h,a);if(z<0)return;const X=cx+x*R,Y=cy-y*R,pu=(Math.sin(time*0.003+i)+1)/2;
+      c.fillStyle='rgba(47,184,240,'+(.3*pu+.1)+')';c.beginPath();c.arc(X,Y,6+pu*7,0,7);c.fill();
+      c.fillStyle=i===0?'#fff':'#7FD6FA';c.beginPath();c.arc(X,Y,i===0?5:3.6,0,7);c.fill();});
+    const s=c.createRadialGradient(cx-R*.45,cy-R*.5,0,cx-R*.45,cy-R*.5,R*.9);s.addColorStop(0,'rgba(255,255,255,.3)');s.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=s;c.beginPath();c.arc(cx,cy,R,0,7);c.fill();
+    orbit(time,true);
+  }
+  if(reduce){draw(0);return;}
+  (function loop(t){draw(t);requestAnimationFrame(loop);})(0);
+})();
+</script>
+</body>
+</html>
